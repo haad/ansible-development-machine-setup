@@ -1,0 +1,13 @@
+---
+
+- include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_os_family | lower }}.yml"
+    - default.yml
+
+- include: "{{ os_playbook }}"
+  with_first_found:
+    - "{{ ansible_os_family | lower }}.yml"
+    - default.yml
+  loop_control:
+    loop_var: os_playbook

@@ -1,0 +1,36 @@
+---
+
+- name: Update cache
+  ansible.builtin.package:
+    update_cache: yes
+    cache_valid_time: 3600
+  register: apt_cache_pkgs
+  until: apt_cache_pkgs is success
+  retries: 4
+  delay: 20
+
+- name: Install basic packages
+  ansible.builtin.package:
+    state: present
+    name: '{{ basic_packages | union(additional_packages) | union(rng_packages) }}'
+  register: apt_pkgs
+  until: apt_pkgs is success
+  retries: 4
+  delay: 20
+
+- name: Start/enable services
+  ansible.builtin.service:
+    name: '{{ item }}'
+    enabled: yes
+    state: started
+  with_items:
+    - '{{ rng_packages }}'
+  when: rng_start_services|default(true)
+
+- name: Add global_environment_variables to environment file
+  blockinfile:
+    dest: "/etc/environment"
+    state: present
+    marker: "# {mark} Managed by Ansible"
+    insertbefore: EOF
+    block: "{{ lookup('template', 'environment.j2') }}"

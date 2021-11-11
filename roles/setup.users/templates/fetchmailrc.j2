@@ -1,0 +1,14 @@
+{% if user.fetchmail is defined %}
+set no bouncemail
+defaults:
+  antispam -1
+    batchlimit 100
+    poll {{ user.fetchmail.server }} with protocol {{ user.fetchmail.protocol }}
+    user {{ user.fetchmail.email }} password {{ user.fetchmail.pass }} is {{ user.name }}
+    #ssl
+    #sslproto SSL3
+    nofetchall
+    keep
+    no rewrite
+    mda "/usr/bin/procmail -f %F -d %T";
+{% endif %}

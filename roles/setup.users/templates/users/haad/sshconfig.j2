@@ -1,0 +1,42 @@
+#
+# http://nerderati.com/2011/03/simplify-your-life-with-an-ssh-config-file/
+#
+Host *
+  ForwardX11          no
+  TCPKeepAlive        yes
+  ServerAliveInterval 10
+  ServerAliveCountMax	300
+
+####
+# Pixel Federation
+####
+
+Host phop
+  User adam
+  Hostname 92.240.241.132
+  Port 6666
+  ForwardAgent yes
+  TCPKeepAlive           yes
+  ServerAliveInterval    10
+  ServerAliveCountMax    300
+  IdentityFile ~/.ssh/id_rsa
+
+Host 192.168.61.*
+  User ahamsik
+  ForwardAgent yes
+  TCPKeepAlive           yes
+  ServerAliveInterval    10
+  ServerAliveCountMax    300
+  IdentityFile ~/.ssh/id_rsa
+  UserKnownHostsFile     /dev/null
+  StrictHostKeyChecking  no
+
+####
+# Dev environment
+####
+Host 172.16.172.*
+  TCPKeepAlive           yes
+  ServerAliveInterval    10
+  ServerAliveCountMax    300
+  UserKnownHostsFile     /dev/null
+  StrictHostKeyChecking  no

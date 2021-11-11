@@ -1,0 +1,63 @@
+---
+- include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_os_family | lower }}.yml"
+    - "default.yml"
+
+- name: Create default admin accounts
+  become: yes
+  user:
+    state: present
+    createhome: yes
+    generate_ssh_key: yes
+    name: "{{ item.name }}"
+    groups: "{{ item.groups | default(omit) }}"
+    home: "/home/{{ item.name }}"
+    password: "{{ item.password | default(omit) }}"
+    shell: "{{ item.shell | default('/bin/bash') }}"
+    append: "{{ item.append | default(false) }}"
+  with_items:
+    - "{{ server_users }}"
+
+- name: Add ssh pub keys to user
+  become: yes
+  authorized_key:
+    state: present
+    manage_dir: yes
+    key: "{{ lookup('file', '../files/keys/' + item.name + '.pub') }}"
+    user: "{{ item.name }}"
+  with_items:
+    - "{{ server_users }}"
+
+- name: Enable sudo without password for admin users in group %sudo
+  become: yes
+  lineinfile:
+    dest: '{{ sudoers_path }}'
+    state: present
+    regexp: '^%{{ sudo_group }}'
+    line: "%{{ sudo_group }} ALL=(ALL) NOPASSWD: ALL"
+    validate: 'visudo -cf %s'
+
+- name: create concatenated keys file
+  become: no
+  local_action:
+    module: assemble
+    src: ../roles/setup.users/files/keys/
+    dest: /tmp/ssh_keys_file
+
+- name: set up authorized_keys
+  authorized_key:
+    user: root
+    key: "{{ lookup('file', '/tmp/ssh_keys_file') }}"
+    exclusive: yes
+
+- name: Include task for per user configuration
+  include_tasks: "{{ user_playbook }}"
+  vars:
+    #user: "{{ ((user_playbook | basename) | splitext).0 }}"
+    user: "{{ server_users | selectattr('name', 'equalto', ((user_playbook | basename) | splitext).0) | join }}"
+  with_fileglob:
+    - ../includes/*.yml
+  when: set_user_env | bool
+  loop_control:
+    loop_var: user_playbook

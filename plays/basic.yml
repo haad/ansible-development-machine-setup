@@ -1,0 +1,38 @@
+---
+
+- name: Deploy common roles
+  hosts: devel
+  become: true
+  gather_facts: true
+  tags: play:basic
+  environment: "{{ deploy_env_vars | default({}) }}"
+  vars_files:
+    - ../vars/devel-machine-secrets.yml
+  tasks:
+    - include_role:
+        name: setup.base-os
+      tags: role:setup.base-os
+
+    - include_role:
+        name: setup.asdf
+      tags: role:setup.asdf
+
+    - include_role:
+        name: setup.users
+      tags: role:setup.users
+
+    - name: Add ansible repository
+      apt_repository:
+        repo: ppa:ansible/ansible
+        update_cache: true
+        state: present
+
+    - name: Install ansible package
+      package:
+        name: '{{ item }}'
+        state: present
+      with_items:
+        - libffi-dev
+        - python-dev
+        - ansible
+        - sshpass

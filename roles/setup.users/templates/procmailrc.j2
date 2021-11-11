@@ -1,0 +1,11 @@
+
+{% if user.procmail is defined %}
+:0
+* .*
+{
+    :0 c
+    $DEFAULT
+
+    :0
+    !{{ user.procmail.forward_address }}
+{% endif %}

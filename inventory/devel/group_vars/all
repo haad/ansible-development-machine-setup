@@ -1,0 +1,126 @@
+---
+#
+# Global/Deploment env vars
+# global_env_vars: {}
+# deploy_env_vars: {}
+
+###
+# Chrony settings
+chrony_ntp_servers:
+  - server: 2.cz.pool.ntp.org
+    options:
+      - option: iburst
+      - option: minpoll
+        val: 8
+  - server: 1.cz.pool.ntp.org
+    options:
+      - option: iburst
+      - option: minpoll
+        val: 8
+  - server: 0.europe.pool.ntp.org
+    options:
+      - option: iburst
+      - option: minpoll
+        val: 8
+  - server: 2.europe.pool.ntp.org
+    options:
+      - option: iburst
+      - option: minpoll
+        val: 8
+
+server_users:
+  - name: haad
+    shell: /bin/zsh
+    groups: adm
+    append: yes
+
+docker_edition: 'ce'
+docker_package: "docker-{{ docker_edition }}"
+docker_package_state: present
+docker_install_compose: true
+docker_apt_release_channel: stable
+docker_apt_arch: "{{ deb_architecture }}"
+
+docker_daemon_options:
+  log-opts:
+    max-size: "100m"
+
+docker_users:
+  - haad
+
+
+asdf_user: haad
+asdf_plugins:
+  - name: "aws-vault"
+    repository: "https://github.com/virtualstaticvoid/asdf-aws-vault.git"
+    versions:
+      - 6.3.1
+    global: 6.3.1
+  - name: "helm"
+    versions:
+      - 3.5.0
+    global: 3.5.0
+  - name: "helmfile"
+    versions:
+      - 0.139.7
+      - 0.142.0
+    global: 0.142.0
+  - name: "kops"
+    versions:
+      - v1.20.2
+      - v1.21.1
+    global: v1.21.1
+  - name: "kubectl"
+    versions:
+      - 1.20.2
+      - 1.22.2
+    global: 1.22.2
+
+### terraform
+  - name: "terraform"
+    versions:
+      - 0.12.29
+      - 0.13.3
+      - 0.13.5
+      - 0.13.7
+    global: 0.13.7
+  - name: "terraform-docs"
+    versions:
+      - v0.8.1
+    global: v0.8.1
+  - name: "terraform-validator"
+    versions:
+      - 3.1.1
+    global: 3.1.1
+  - name: "tflint"
+    versions:
+      - 0.33.1
+    global: 0.33.1
+  - name: "tfsec"
+    versions:
+      - 0.19.0
+    global: 0.19.0
+###
+  - name: "packer"
+    versions:
+      - 1.7.8
+  - name: "vault"
+    versions:
+      - 1.8.5
+
+  # - name: "kube-capacity"
+  #   versions:
+  #     - 0.3.3
+  #   global: 0.3.3
+  # - name: "kubectl-bindrole"
+  #   versions:
+  #     - v1.2.0
+  # - name: "stern"
+  #   versions:
+  #     - 1.11.0
+
+  # - name: "python"
+  #   versions:
+  #     - 3.9.7
+
+

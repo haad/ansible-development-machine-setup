@@ -1,0 +1,25 @@
+---
+basic_packages:
+  - vim
+  - screen
+  - nmap
+  - links
+  - zsh
+  - rsync
+  - git
+  - the_silver_searcher
+  - mozilla-rootcerts
+  - py27-SSLCrypto
+  - py27-asn1
+  - py27-asn1-modules
+  - py27-httpie
+  - py27-pip
+  - bsdstats
+  - jq
+  - htop
+  - sysupgrade
+  - sysbuild
+  - bash
+
+rng_packages:
+  - prngd

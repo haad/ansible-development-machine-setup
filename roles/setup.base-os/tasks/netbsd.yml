@@ -1,0 +1,14 @@
+---
+
+- name: Install basic packages
+  pkgin:
+    state: present
+    update_cache: yes
+    name: '{{ item }}'
+  with_items:
+    - '{{ basic_packages }}'
+    - '{{ additional_packages }}'
+  register: pkgins
+  until: pkgins | success
+  retries: 4
+  delay: 20

@@ -1,0 +1,15 @@
+---
+galaxy_info:
+  author: Adam Hamsik
+  description: Common server role for setting up user accounts on servers
+  company: Ceske Radiokomunikacie a.s.
+  license: MIT
+  min_ansible_version: 1.2
+  platforms:
+    - name: Ubuntu
+      versions:
+      - all
+  categories:
+    - system
+
+dependencies: []

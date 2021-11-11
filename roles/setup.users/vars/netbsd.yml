@@ -1,0 +1,6 @@
+---
+
+pip_executable: /usr/pkg/bin/pip2.7
+
+sudoers_path: /usr/pkg/etc/sudoers
+sudo_group: wheel

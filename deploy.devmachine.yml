@@ -1,0 +1,7 @@
+###
+# Basic setup
+- import_playbook: plays/basic.yml
+
+###
+# Docker setup
+# - import_playbook: plays/docker.yml

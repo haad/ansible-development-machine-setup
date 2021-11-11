@@ -1,0 +1,4 @@
+devmachine ansible_host=10.211.55.3 ansible_port=22 ansible_python_interpreter=/usr/bin/python3
+
+[devel]
+devmachine

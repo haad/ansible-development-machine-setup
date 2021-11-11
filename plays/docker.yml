@@ -1,0 +1,18 @@
+---
+
+- name: Deploy docker
+  hosts: devel
+  become: true
+  gather_facts: true
+  tags: play:basic
+  environment: "{{ deploy_env_vars | default({}) }}"
+  vars_files:
+    - ../vars/devel-machine-secrets.yml
+  tasks:
+    - name: Get DEB architecture
+      shell: dpkg --print-architecture
+      register: deb_architecture
+
+    - include_role:
+        name: service.docker
+      tags: role:docker.deploy

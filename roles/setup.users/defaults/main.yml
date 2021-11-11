@@ -1,0 +1,13 @@
+---
+##
+# Default Password was set to -> CraPass4Acc@
+#
+
+pip_executable: pip3
+
+sudoers_path: /etc/sudoers
+sudo_group: sudo
+
+server_users: []
+
+set_user_env: yes

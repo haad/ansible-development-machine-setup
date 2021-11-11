@@ -1,0 +1,86 @@
+---
+
+- name: Install git-up
+  pip:
+    name: '{{ item }}'
+    executable: '{{ pip_executable | default(omit) }}'
+    state: present
+  with_items:
+    - git-up
+    - shovel
+    - ipython
+
+- name: Create config directories
+  file:
+    path: "{{ item.path }}"
+    owner: "{{ item.owner | default('haad') }}"
+    mode: "{{ item.mode | default('0644') }}"
+    state: directory
+  with_items:
+    - path: /home/haad/.ssh
+      mode: '0700'
+    - path: /home/haad/bin
+      mode: '0755'
+    - path: /home/haad/Devel
+      mode: '0755'
+    - path: /home/haad/Devel/go
+      mode: '0755'
+
+
+- name: Deploy required templates
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner | default('haad') }}"
+    mode: "{{ item.mode | default('0644') }}"
+  with_items:
+    - src: users/haad/zshrc.j2
+      dest: /home/haad/.zshrc
+    - src: users/haad/tmux.conf.j2
+      dest: /home/haad/.tmux.conf
+
+    - src: users/haad/terraformrc.j2
+      dest: /home/haad/.terraformrc
+
+    - src: users/haad/gitconfig.j2
+      dest: /home/haad/.gitconfig
+    - src: users/haad/gitignore.j2
+      dest: /home/haad/.gitignore
+    - src: users/haad/sshconfig.j2
+      dest: /home/haad/.ssh/config
+
+    - src: users/haad/vimrc.bundles.local.j2
+      dest: /home/haad/.vimrc.bundles.local
+    - src: users/haad/vimrc.local.j2
+      dest: /home/haad/.vimrc.local
+#    - src: procmailrc.j2
+#      dest: /home/haad/.procmailrc
+#    - src: fetchmailrc.j2
+#      dest: /home/haad/.fetchmailrc
+
+#- name: Setup fetchmail cron job
+#  cron:
+#    name: "Check mails for user {{ user.name }}"
+#    user: "{{ user.name }}"
+#    minute: '*/15'
+#    job: /usr/bin/fetchmail >/dev/null 2>&1
+
+- name: Install oh-my-zsh to user directory
+  become_user: haad
+  git:
+    repo: https://github.com/haad/oh-my-zsh.git
+    dest: /home/haad/.oh-my-zsh
+  register: ohmyzsh
+  until: ohmyzsh is success
+  retries: 5
+  delay: 2
+
+- name: Installing spf13-vim, The Ultimate Vim Distribution (http://vim.spf13.com)
+  become_user: haad
+  shell: curl http://j.mp/spf13-vim3 -L -o - | bash
+  args:
+    creates: /home/haad/.spf13-vim-3
+  register: spf13
+  until: spf13 is success
+  retries: 5
+  delay: 2
