@@ -16,3 +16,18 @@
     - include_role:
         name: service.docker
       tags: role:docker.deploy
+
+    - name: Install docker libs
+      pip:
+        name: '{{ item }}'
+        executable: '{{ pip_executable | default(omit) }}'
+        state: present
+      with_items:
+        - docker-py
+
+    - name: Docker login
+      become: true
+      become_user: "{{ docker_login_username }}"
+      docker_login:
+          username: "{{ docker_login_username }}"
+          password: "{{ docker_login_password }}"

@@ -41,16 +41,16 @@
 [git-up "fetch"]
   all = true
 
-[pager]
-  log  = diffr | less -R -N
-  show = diffr --line-numbers | less -R -N
-  diff = diffr --line-numbers | less -R -N
+#[pager]
+#  log  = diffr | less -R -N
+#  show = diffr --line-numbers | less -R -N
+#  diff = diffr --line-numbers | less -R -N
 
-# [pager]
-#   diff = delta -n
-#   log = delta -n
-#   reflog = delta -n
-#   show = delta -n
+[pager]
+  diff = delta -n
+  log = delta -n
+  reflog = delta -n
+  show = delta -n
 
 [interactive]
   diffFilter = delta -n --color-only --features=interactive

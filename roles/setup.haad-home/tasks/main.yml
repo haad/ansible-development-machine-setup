@@ -1,4 +1,7 @@
 ---
+- name: Get DEB architecture
+  shell: dpkg --print-architecture
+  register: deb_architecture
 
 - name: Install git-up
   pip:
@@ -9,6 +12,7 @@
     - git-up
     - shovel
     - ipython
+    - docker-py
 
 - name: Create config directories
   file:
@@ -18,6 +22,8 @@
     state: directory
   with_items:
     - path: /home/haad/.ssh
+      mode: '0700'
+    - path: /home/haad/.config
       mode: '0700'
     - path: /home/haad/bin
       mode: '0755'
@@ -34,25 +40,27 @@
     owner: "{{ item.owner | default('haad') }}"
     mode: "{{ item.mode | default('0644') }}"
   with_items:
-    - src: users/haad/zshrc.j2
+    - src: zshrc.j2
       dest: /home/haad/.zshrc
-    - src: users/haad/tmux.conf.j2
+    - src: tmux.conf.j2
       dest: /home/haad/.tmux.conf
 
-    - src: users/haad/terraformrc.j2
+    - src: terraformrc.j2
       dest: /home/haad/.terraformrc
 
-    - src: users/haad/gitconfig.j2
+    - src: gitconfig.j2
       dest: /home/haad/.gitconfig
-    - src: users/haad/gitignore.j2
+    - src: gitignore.j2
       dest: /home/haad/.gitignore
-    - src: users/haad/sshconfig.j2
+    - src: sshconfig.j2
       dest: /home/haad/.ssh/config
 
-    - src: users/haad/vimrc.bundles.local.j2
+    - src: vimrc.bundles.local.j2
       dest: /home/haad/.vimrc.bundles.local
-    - src: users/haad/vimrc.local.j2
+    - src: vimrc.local.j2
       dest: /home/haad/.vimrc.local
+
+
 #    - src: procmailrc.j2
 #      dest: /home/haad/.procmailrc
 #    - src: fetchmailrc.j2
@@ -75,12 +83,54 @@
   retries: 5
   delay: 2
 
-- name: Installing spf13-vim, The Ultimate Vim Distribution (http://vim.spf13.com)
-  become_user: haad
-  shell: curl http://j.mp/spf13-vim3 -L -o - | bash
+
+- name: Install delta git pager
+  apt:
+    deb: "{{ delta_base_url }}/{{ delta_version }}/git-delta_{{ delta_version }}_{{ deb_architecture.stdout }}.deb"
+    state: present
+  register: delta
+  until: delta is success
+  retries: 5
+  delay: 2
+
+- name: Installing NodeJS repo
+  shell: curl -fsSL https://deb.nodesource.com/setup_{{ nodejs_version }}.x | bash
   args:
-    creates: /home/haad/.spf13-vim-3
-  register: spf13
-  until: spf13 is success
+    creates: /etc/apt/sources.list.d/nodesource.list
+  register: nodejs
+  until: nodejs is success
+  retries: 5
+  delay: 2
+
+- name: Install neovim ppa
+  apt_repository:
+    repo: ppa:neovim-ppa/stable
+
+- name: Install lazygit ppa
+  apt_repository:
+    repo: ppa:lazygit-team/release
+
+- name: Install Nodejs
+  ansible.builtin.apt:
+    update_cache: yes
+    cache_valid_time: 3600
+    name: "{{ item }}"
+    state: present
+  with_items:
+      - nodejs
+      - git
+      - neovim
+      - ripgrep
+      - lazygit
+      - pandoc
+
+
+- name: Install VapourNvim to user directory
+  become_user: haad
+  git:
+    repo: https://github.com/haad/VapourNvim.git
+    dest: /home/haad/.config/nvim
+  register: vapournvim
+  until: vapournvim is success
   retries: 5
   delay: 2

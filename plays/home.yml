@@ -1,0 +1,14 @@
+---
+
+- name: Deploy common roles
+  hosts: devel
+  become: true
+  gather_facts: true
+  tags: play:basic
+  environment: "{{ deploy_env_vars | default({}) }}"
+  vars_files:
+    - ../vars/devel-machine-secrets.yml
+  tasks:
+    - include_role:
+        name: setup.haad-home
+      tags: role:setup.users

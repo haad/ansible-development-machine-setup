@@ -1,3 +1,5 @@
+# vi: ft=ansible
+
 ---
 #
 # Global/Deploment env vars
@@ -44,10 +46,16 @@ docker_apt_arch: "{{ deb_architecture }}"
 docker_daemon_options:
   log-opts:
     max-size: "100m"
+  hosts:
+    - "fd://"
+    - "unix:///var/run/docker.sock"
+    - "tcp://0.0.0.0:2375"
 
+# XXX: User name is duplicated here, but I want to support docker_login here.
 docker_users:
   - haad
 
+docker_login_username: haad
 
 asdf_user: haad
 asdf_plugins:
@@ -107,6 +115,11 @@ asdf_plugins:
   - name: "vault"
     versions:
       - 1.8.5
+  - name: "golang"
+    repository: "https://github.com/kennyp/asdf-golang.git"
+    versions:
+      - 1.17.3
+    global: 1.17.3
 
   # - name: "kube-capacity"
   #   versions:

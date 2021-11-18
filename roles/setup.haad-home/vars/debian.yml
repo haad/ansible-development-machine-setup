@@ -1,0 +1,4 @@
+---
+
+sudoers_path: /etc/sudoers
+sudo_group: adm

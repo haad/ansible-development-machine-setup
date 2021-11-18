@@ -4,6 +4,10 @@
     - "{{ ansible_os_family | lower }}.yml"
     - "default.yml"
 
+- name: Get DEB architecture
+  shell: dpkg --print-architecture
+  register: deb_architecture
+
 - name: Create default admin accounts
   become: yes
   user:
@@ -50,14 +54,3 @@
     user: root
     key: "{{ lookup('file', '/tmp/ssh_keys_file') }}"
     exclusive: yes
-
-- name: Include task for per user configuration
-  include_tasks: "{{ user_playbook }}"
-  vars:
-    #user: "{{ ((user_playbook | basename) | splitext).0 }}"
-    user: "{{ server_users | selectattr('name', 'equalto', ((user_playbook | basename) | splitext).0) | join }}"
-  with_fileglob:
-    - ../includes/*.yml
-  when: set_user_env | bool
-  loop_control:
-    loop_var: user_playbook

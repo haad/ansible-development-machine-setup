@@ -4,4 +4,8 @@
 
 ###
 # Docker setup
-# - import_playbook: plays/docker.yml
+- import_playbook: plays/docker.yml
+
+###
+# Setup User Home setup
+- import_playbook: plays/home.yml
