@@ -1,0 +1,14 @@
+---
+
+
+# - name: Install required packages
+#   community.general.homebrew:
+#     state: present
+#     name: '{{ item }}'
+#   with_items:
+#       - nodejs
+#       - git
+#       - neovim
+#       - ripgrep
+#       - lazygit
+#       - pandoc

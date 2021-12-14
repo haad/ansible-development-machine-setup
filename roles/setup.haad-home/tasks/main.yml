@@ -83,47 +83,12 @@
   retries: 5
   delay: 2
 
-
-- name: Install delta git pager
-  apt:
-    deb: "{{ delta_base_url }}/{{ delta_version }}/git-delta_{{ delta_version }}_{{ deb_architecture.stdout }}.deb"
-    state: present
-  register: delta
-  until: delta is success
-  retries: 5
-  delay: 2
-
-- name: Installing NodeJS repo
-  shell: curl -fsSL https://deb.nodesource.com/setup_{{ nodejs_version }}.x | bash
-  args:
-    creates: /etc/apt/sources.list.d/nodesource.list
-  register: nodejs
-  until: nodejs is success
-  retries: 5
-  delay: 2
-
-- name: Install neovim ppa
-  apt_repository:
-    repo: ppa:neovim-ppa/stable
-
-- name: Install lazygit ppa
-  apt_repository:
-    repo: ppa:lazygit-team/release
-
-- name: Install Nodejs
-  ansible.builtin.apt:
-    update_cache: yes
-    cache_valid_time: 3600
-    name: "{{ item }}"
-    state: present
-  with_items:
-      - nodejs
-      - git
-      - neovim
-      - ripgrep
-      - lazygit
-      - pandoc
-
+- include: "{{ os_playbook }}"
+  with_first_found:
+    - "{{ ansible_os_family | lower }}.yml"
+    - default.yml
+  loop_control:
+    loop_var: os_playbook
 
 - name: Install VapourNvim to user directory
   become_user: haad
@@ -134,3 +99,6 @@
   until: vapournvim is success
   retries: 5
   delay: 2
+
+
+

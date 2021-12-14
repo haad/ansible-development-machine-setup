@@ -1,0 +1,27 @@
+.:53 {
+    bind lo0
+
+    log
+    errors
+    prometheus
+    health
+
+    hosts /usr/local/etc/hosts {
+        fallthrough
+    }
+
+    hosts /usr/local/etc/hosts.blocked {
+        fallthrough
+    }
+
+    forward . 1.1.1.1 8.8.8.8 208.67.222.222 208.67.220.220 9.9.9.9
+
+   # Pixelfederation dns
+   # 10.0.0.201 10.0.0.202
+
+    cache {
+        prefetch 5
+        serve_stale
+    }
+    reload
+}

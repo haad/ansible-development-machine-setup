@@ -1,0 +1,18 @@
+---
+
+- name: Deploy common roles
+  hosts: macos
+  become: true
+  gather_facts: true
+  tags: play:macos
+  environment: "{{ deploy_env_vars | default({}) }}"
+  vars_files:
+    - ../vars/devel-machine-secrets.yml
+  tasks:
+    - include_role:
+        name: setup.osx
+      tags: role:setup.base-os
+
+    - include_role:
+        name: setup.asdf
+      tags: role:setup.asdf

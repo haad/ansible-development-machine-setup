@@ -1,0 +1,29 @@
+---
+
+- name: Make sure Homebrew directories exists
+  file:
+    path: /usr/local/etc/coredns
+    mode: 0775
+    owner: haad
+    group: admin
+
+
+- name: Deploy Coredns template
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner | default('haad') }}"
+    mode: "{{ item.mode | default('0644') }}"
+  with_items:
+    - src: Corefile.j2
+      dest: /usr/local/etc/coredns/Corefile
+    - src: hosts.j2
+      dest: /usr/local/etc/hosts
+
+- name: Download foo.conf
+  get_url:
+    url: https://hblock.molinero.dev/hosts
+    dest: /usr/local/etc/hosts.blocked
+    mode: '0440'
+
+    

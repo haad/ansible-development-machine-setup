@@ -28,7 +28,7 @@
   when: rng_start_services|default(true)
 
 - name: Add global_environment_variables to environment file
-  blockinfile:
+  ansible.builtin.blockinfile:
     dest: "/etc/environment"
     state: present
     marker: "# {mark} Managed by Ansible"

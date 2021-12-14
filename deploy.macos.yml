@@ -1,0 +1,7 @@
+###
+# Basic setup
+- import_playbook: plays/macos.yml
+
+###
+# Setup User Home setup
+- import_playbook: plays/home.yml

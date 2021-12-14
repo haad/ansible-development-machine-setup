@@ -1,4 +1,11 @@
-devmachine ansible_host=10.211.55.3 ansible_port=22 ansible_python_interpreter=/usr/bin/python3
+
+devvm ansible_host=192.168.74.23 ansible_port=22 ansible_python_interpreter=/usr/bin/python3
+
+devbook ansible_host=192.168.100.157 ansible_port=22 ansible_user=haad ansible_python_interpreter=/usr/bin/python3
+
 
 [devel]
-devmachine
+devvm
+
+[macos]
+devbook

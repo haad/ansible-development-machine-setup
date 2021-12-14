@@ -1,0 +1,72 @@
+---
+
+# - name: Make sure Homebrew directories exists
+#   file:
+#     path: /usr/local/*
+#     state: directory
+#     mode: 0775
+#     owner: root
+#     group: wheel
+#     recurse: yes
+
+# - name: Download Homebrew installation script
+#   get_url:
+#     url: https://raw.githubusercontent.com/Homebrew/install/master/install
+#     dest: /tmp/install
+#   become: no
+
+# - name: Install Homebrew
+#   shell: /usr/bin/ruby /tmp/install < /dev/null
+# # 🎉 https://stackoverflow.com/a/39864317/503463
+#   become: no
+
+# - name: Reset the Homebrew Library repo
+#   git:
+#     repo: https://github.com/Homebrew/brew.git
+#     dest: /usr/local/Homebrew/Library
+#     clone: no
+#     update: yes
+#     force: yes
+#   become: no
+
+- name: Update Homebrew (first try may fail)
+  community.general.homebrew:
+    update_homebrew: yes
+  become: no
+  register: brew_update
+  until: brew_update is success
+  retries: 4
+  delay: 20
+
+- name: Tap required taps
+  community.general.homebrew_tap:
+    name: '{{ item }}'
+    state: present
+  become: no
+  with_items: '{{ brew_taps }}'
+  register: _brew_taps
+  until: _brew_taps is success
+  retries: 4
+  delay: 20
+
+- name: Install required packages
+  community.general.homebrew:
+    state: present
+    name: '{{ brew_packages | union(additional_packages) }}'
+  become: no
+  register: _brew_pkgs
+  until: _brew_pkgs is success
+  retries: 4
+  delay: 20
+
+- name: Install required casks
+  community.general.homebrew_cask:
+    state: present
+    name: '{{ brew_casks | union(additional_casks) }}'
+  become: no
+  register: _brew_pkgs
+  until: _brew_pkgs is success
+  retries: 4
+  delay: 20
+
+
