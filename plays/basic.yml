@@ -14,12 +14,13 @@
       tags: role:setup.base-os
 
     - include_role:
+        name: setup.users
+      tags: role:setup.users
+
+    - include_role:
         name: setup.asdf
       tags: role:setup.asdf
 
-    - include_role:
-        name: setup.users
-      tags: role:setup.users
 
     - name: Add ansible repository
       apt_repository:
