@@ -1,0 +1,23 @@
+###
+# Basic setup
+# - import_playbook: plays/basic.yml
+#   vars:
+#     deploy_hosts: rpi
+
+###
+# Docker setup
+# - import_playbook: plays/docker.yml
+#   vars:
+#     deploy_hosts: rpi
+
+###
+# Docker setup
+- import_playbook: plays/monitoring.yml
+  vars:
+    deploy_hosts: rpi
+
+###
+# Setup User Home setup
+# - import_playbook: plays/home.yml
+#   vars:
+#     deploy_hosts: rpi

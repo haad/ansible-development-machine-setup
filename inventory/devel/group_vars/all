@@ -73,11 +73,26 @@ asdf_plugins:
       - 0.139.7
       - 0.142.0
     global: 0.142.0
+  # - name: "helm-cr"
+  #   versions:
+  #     - latest
+  # - name: "helm-ct"
+  #   versions:
+  #     - latest
+  # - name: "helm-diff"
+  #   versions:
+  #     - latest
+  # - name: "dyff"
+  #   versions:
+  #     - latest
+  # - name: "driftctl"
+  #   versions:
+  #     - latest
+
   - name: "kops"
     versions:
-      - v1.20.2
-      - v1.21.1
-    global: v1.21.1
+      - v1.22.3
+    global: v1.22.3
   - name: "kubectl"
     versions:
       - 1.20.2
@@ -87,27 +102,25 @@ asdf_plugins:
 ### terraform
   - name: "terraform"
     versions:
-      - 0.12.29
-      - 0.13.3
-      - 0.13.5
-      - 0.13.7
-    global: 0.13.7
+      - 1.0.10
+      - 1.1.0
+    global: 1.0.10
   - name: "terraform-docs"
     versions:
-      - v0.8.1
-    global: v0.8.1
+      - v0.16.0
+    global: v0.16.0
   - name: "terraform-validator"
     versions:
-      - 3.1.1
-    global: 3.1.1
+      - 3.1.3
+    global: 3.1.3
   - name: "tflint"
     versions:
-      - 0.33.1
-    global: 0.33.1
+      - 0.34.0
+    global: 0.34.0
   - name: "tfsec"
     versions:
-      - 0.19.0
-    global: 0.19.0
+      - 0.63.1
+    global: 0.63.1
 ###
   - name: "packer"
     versions:

@@ -106,9 +106,20 @@
   apt_repository:
     repo: ppa:neovim-ppa/stable
 
-- name: Install lazygit ppa
-  apt_repository:
-    repo: ppa:lazygit-team/release
+# - name: Install lazygit ppa
+#   apt_repository:
+#     repo: ppa:lazygit-team/release
+
+# lazygit_0.31.4_Linux_arm64.tar.gz
+- name: Download lazygit
+  get_url:
+      url: "{{ lazygit_base_url }}/v{{ lazygit_version }}/lazygit_{{ lazygit_version }}_Linux_{{ deb_architecture.stdout }}.tar.gz"
+      dest: /tmp/lazygit.tar.gz
+
+- name: Unarchive lazygit
+  unarchive:
+      src: /tmp/lazygit.tar.gz
+      dest: /usr/local/bin/lazygit
 
 - name: Install Nodejs
   ansible.builtin.apt:
@@ -121,7 +132,6 @@
       - git
       - neovim
       - ripgrep
-      - lazygit
       - pandoc
 
 

@@ -1,13 +1,13 @@
 ---
 
 - name: Deploy common roles
-  hosts: devel
+  hosts: "{{ deploy_hosts }}"
   become: true
   gather_facts: true
   tags: play:basic
   environment: "{{ deploy_env_vars | default({}) }}"
   vars_files:
-    - ../vars/devel-machine-secrets.yml
+    - ../vars/common-secrets.yml
   tasks:
     - include_role:
         name: setup.base-os

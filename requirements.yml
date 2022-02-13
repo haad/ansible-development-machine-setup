@@ -16,3 +16,26 @@
   version: 4.1.1
   path: ./dist
 
+- name: service.prometheus
+  src: https://github.com/cloudalchemy/ansible-prometheus
+  scm: git
+  version: 4.0.0
+  path: ./dist
+
+- name: service.prometheus-blackbox
+  src: https://github.com/cloudalchemy/ansible-blackbox-exporter
+  scm: git
+  version: 1.0.0
+  path: ./dist
+
+# - name: service.grafana-cloud-agent
+#   src: https://github.com/haad/ansible-role-grafana_agent
+#   scm: git
+#   version: main
+#   path: ./dist
+
+- name: systemd-service
+  scm: git
+  src: https://github.com/lablabs/ansible-role-systemd-service.git
+  version: 1.0.0
+  path: ./dist

@@ -1,11 +1,17 @@
 ###
 # Basic setup
 - import_playbook: plays/basic.yml
+  vars:
+    deploy_hosts: devel
 
 ###
 # Docker setup
 - import_playbook: plays/docker.yml
+  vars:
+    deploy_hosts: devel
 
 ###
 # Setup User Home setup
 - import_playbook: plays/home.yml
+  vars:
+    deploy_hosts: devel
