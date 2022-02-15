@@ -1,4 +1,4 @@
-- name: Deploy docker
+- name: Deploy Monitoring Stack Grafana + Exporters
   hosts: "{{ deploy_hosts }}"
   become: true
   gather_facts: true
