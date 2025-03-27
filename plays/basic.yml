@@ -34,6 +34,5 @@
         state: present
       with_items:
         - libffi-dev
-        - python-dev
         - ansible
         - sshpass

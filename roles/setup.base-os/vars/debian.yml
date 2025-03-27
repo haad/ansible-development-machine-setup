@@ -34,5 +34,4 @@ basic_packages:
   - ripgrep
 
 rng_packages:
-  - rng-tools
   - haveged

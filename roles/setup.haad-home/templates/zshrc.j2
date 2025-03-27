@@ -7,7 +7,8 @@ DISABLE_AUTO_TITLE="false"
 export GOPATH="${HOME}/Devel/go"
 export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:${GOPATH}/bin:$PATH
 
-export HOMEBREW_GITHUB_API_TOKEN="{{ userconf_homebrew_github_api_token }}"
+
+{% if userconf_homebrew_github_api_token is defined %} export HOMEBREW_GITHUB_API_TOKEN="{{ userconf_homebrew_github_api_token }}" {% endif %}
 export EDITOR=nvim
 export HOSTNAME=$(hostname)
 

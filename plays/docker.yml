@@ -31,3 +31,4 @@
       docker_login:
           username: "{{ docker_login_username }}"
           password: "{{ docker_login_password }}"
+      when: docker_login_password is defined
