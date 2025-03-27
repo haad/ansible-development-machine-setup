@@ -146,3 +146,17 @@
   until: vapournvim is success
   retries: 5
   delay: 2
+
+
+- name: Set authorized key taken from file
+  ansible.posix.authorized_key:
+    user: haad 
+    state: present
+    key: "{{ lookup('file', 'files/keys/haad.pub') }}"
+
+- name: Set authorized key taken from file
+  ansible.posix.authorized_key:
+    user: haad
+    state: present
+    key: "{{ lookup('file', 'files/keys/haad2.pub') }}"
+
