@@ -13,7 +13,7 @@
 - name: service.docker
   src: https://github.com/geerlingguy/ansible-role-docker
   scm: git
-  version: 4.1.1
+  version: 7.4.7
   path: ./dist
 
 - name: service.prometheus
