@@ -3,15 +3,15 @@ devmachine ansible_host=192.168.64.3 ansible_port=22 ansible_python_interpreter=
 rpi ansible_host=172.16.250.201 ansible_port=22 ansible_python_interpreter=/usr/bin/python3 ansible_user=haad
 archer ansible_host=172.16.250.1 ansible_port=22 ansible_python_interpreter=/usr/bin/python3 ansible_user=ubuntu
 
-dev-box ansible_host=localhost
+dev-box ansible_host=localhost ansible_connection=local
 
-[dev-box]
+[dev-box-group]
 dev-box
 
 [devel]
 devmachine
 
-[rpi]
+[rpi-group]
 rpi
 
 [router]
